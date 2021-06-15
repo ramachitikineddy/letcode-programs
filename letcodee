@@ -176,6 +176,430 @@ Explanation:
             c+=is_prime(sbc)
         return c
 .................................................
+9.    Given an array nums of non-negative integers, return an array consisting of all the even elements of nums, followed by all the odd elements of nums.
+
+You may return any answer array that satisfies this condition.
+
+Example 1:
+
+Input: nums = [3,1,2,4]
+Output: [2,4,3,1]
+The outputs [4,2,3,1], [2,4,1,3], and [4,2,1,3] would also be accepted.
+ANSWER:
+class Solution:
+    def sortArrayByParity(self, nums: List[int]) -> List[int]:
+        i=0
+        n=len(nums)
+        for j in range(n):
+            if nums[j]%2==0:
+                nums[i],nums[j]=nums[j],nums[i]
+                i+=1
+        return nums
+........................................................
+10.     Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+Example 1:
+
+Input: nums = [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+Explanation: After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100].
+  ANSWER:
+  class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        k=[]
+        for i in nums:
+            i=i**2
+            k.append(i)
+            k.sort()
+        return k
+  .........................................................
+ 11.   Every non-negative integer n has a binary representation.  For example, 5 can be represented as "101" in binary, 11 as "1011" in binary, and so on.  Note that except for n = 0, there are no leading zeroes in any binary representation.
+
+The complement of a binary representation is the number in binary you get when changing every 1 to a 0 and 0 to a 1.  For example, the complement of "101" in binary is "010" in binary.
+
+For a given number n in base-10, return the complement of it's binary representation as a base-10 integer.
+Example 1:
+
+Input: n = 5
+Output: 2
+Explanation: 5 is "101" in binary, with complement "010" in binary, which is 2 in base-10.
+
+ANSWER:
+class Solution:
+    def bitwiseComplement(self, n: int) -> int:
+        nn=0
+        c=0
+        if n==0:
+            return 1
+        while n:
+            r=n%2
+            n=n//2
+            if r==0 :
+                r=1
+            else:
+                r=0
+            nn=nn+r*pow(10,c)
+            c+=1
+        s=0
+        t=nn
+        c=0
+        while t:
+            p=t%10
+            t=t//10
+            if p==1:
+                s=s+pow(2,c)
+                c+=1
+            else:
+                c+=1
+        return s
+ ..............................................................
+ 12.   A school is trying to take an annual photo of all the students. The students are asked to stand in a single file line in non-decreasing order by height. Let this ordering be represented by the integer array expected where expected[i] is the expected height of the ith student in line.
+
+You are given an integer array heights representing the current order that the students are standing in. Each heights[i] is the height of the ith student in line (0-indexed).
+
+Return the number of indices where heights[i] != expected[i].
+Example 1:
+
+Input: heights = [1,1,4,2,1,3]
+Output: 3
+Explanation: 
+heights:  [1,1,4,2,1,3]
+expected: [1,1,1,2,3,4]
+Indices 2, 4, and 5 do not match. 
+
+ANSWER:
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        n=len(heights)
+        d=sorted(heights)
+        c=0
+        for i in range(n):
+            if d[i]!=heights[i]:
+                c+=1
+        return c
+ .........................................................................
+ 13.  Given an integer number n, return the difference between the product of its digits and the sum of its digits.
+ Example 1:
+
+Input: n = 234
+Output: 15 
+Explanation: 
+Product of digits = 2 * 3 * 4 = 24 
+Sum of digits = 2 + 3 + 4 = 9 
+Result = 24 - 9 = 15
+
+ANSWER:
+class Solution:
+    def subtractProductAndSum(self, n: int) -> int:
+        pd=1
+        sd=0
+        t=n
+        while n:
+            r=n%10
+            n=n//10
+            pd=pd*r
+            sd=sd+r
+        return pd-sd
+ ............................................................
+ 14.   Given an array nums of integers, return how many of them contain an even number of digits.
+ Example 1:
+
+Input: nums = [12,345,2,6,7896]
+Output: 2
+Explanation: 
+12 contains 2 digits (even number of digits). 
+345 contains 3 digits (odd number of digits). 
+2 contains 1 digit (odd number of digits). 
+6 contains 1 digit (odd number of digits). 
+7896 contains 4 digits (even number of digits). 
+Therefore only 12 and 7896 contain an even number of digits.
+
+ANSWER:
+class Solution:
+    def findNumbers(self, nums: List[int]) -> int:
+        c=0
+        k=[]
+        s=0
+        for i in nums:
+            while i:
+                i=i//10
+                c+=1
+            k.append(c)
+            c=0
+        for j in k:
+            if j%2==0:
+                s+=1
+        return s
+ ............................................................
+ 15.  Given a positive integer num consisting only of digits 6 and 9.
+
+Return the maximum number you can get by changing at most one digit (6 becomes 9, and 9 becomes 6).
+Example 1:
+
+Input: num = 9669
+Output: 9969
+Explanation: 
+Changing the first digit results in 6669.
+Changing the second digit results in 9969.
+Changing the third digit results in 9699.
+Changing the fourth digit results in 9666. 
+The maximum number is 9969.
+
+ANSWER:
+
+class Solution:
+    def maximum69Number (self, num: int) -> int:
+        c=0
+        temp=num
+        while num:
+            r=num%10
+            num=num//10
+            c+=1
+        num=temp
+        temp=0
+        c=c-1
+        while c!=-1 or num!=0:
+            r=num//pow(10,c)
+            num=num%pow(10,c)
+            c-=1
+            if r==6:
+                r=9
+                return temp+r*pow(10,c+1)+num
+            else:
+                temp=temp+r*pow(10,c+1)
+        return temp
+ ....................................................................
+ 16.   Given two integer arrays startTime and endTime and given an integer queryTime.
+
+The ith student started doing their homework at the time startTime[i] and finished it at time endTime[i].
+
+Return the number of students doing their homework at time queryTime. More formally, return the number of students where queryTime lays in the interval [startTime[i], endTime[i]] inclusive.
+Example 1:
+
+Input: startTime = [1,2,3], endTime = [3,2,7], queryTime = 4
+Output: 1
+Explanation: We have 3 students where:
+The first student started doing homework at time 1 and finished at time 3 and wasn't doing anything at time 4.
+The second student started doing homework at time 2 and finished at time 2 and also wasn't doing anything at time 4.
+The third student started doing homework at time 3 and finished at time 7 and was the only student doing homework at time 4.
+
+ANSWER:
+class Solution:
+    def busyStudent(self, startTime: List[int], endTime: List[int], queryTime: int) -> int:
+        c=0
+        for i in range(len(startTime)):
+            if (startTime[i]<=queryTime<=endTime[i]):
+                    c+=1
+        return c
+        
+......................................................................................
+17.    Given the array of integers nums, you will choose two different indices i and j of that array. Return the maximum value of (nums[i]-1)*(nums[j]-1).
+ 
+
+Example 1:
+
+Input: nums = [3,4,5,2]
+Output: 12 
+Explanation: If you choose the indices i=1 and j=2 (indexed from 0), you will get the maximum value, that is, (nums[1]-1)*(nums[2]-1) = (4-1)*(5-1) = 3*4 = 12. 
+
+ANSWER:
+  class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        l=max(nums)
+        nums.remove(l)
+        k=max(nums)
+        m=(l-1)*(k-1)
+        return m
+ ....................................................................
+ 18.   Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
+
+Return the running sum of nums.
+Example 1:
+
+Input: nums = [1,2,3,4]
+Output: [1,3,6,10]
+Explanation: Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].
+
+ANSWER:
+class Solution:
+    def runningSum(self, nums: List[int]) -> List[int]:
+        n=len(nums)
+        for i in range(1,n):
+            nums[i]=nums[i]+nums[i-1]
+        return nums
+..........................................................................
+19.    Given an integer n and an integer start.
+
+Define an array nums where nums[i] = start + 2*i (0-indexed) and n == nums.length.
+
+Return the bitwise XOR of all elements of nums.
+Example 1:
+
+Input: n = 5, start = 0
+Output: 8
+Explanation: Array nums is equal to [0, 2, 4, 6, 8] where (0 ^ 2 ^ 4 ^ 6 ^ 8) = 8.
+Where "^" corresponds to bitwise XOR operator.
+
+ANSWER:
+  class Solution:
+    def xorOperation(self, n: int, start: int) -> int:
+        i=1
+        res=start
+        start=start+2
+        while i<n:
+            res=res^start
+            start=start+2
+            i+=1
+        return res
+ ...............................................................................
+ 20.   Given an array of unique integers salary where salary[i] is the salary of the employee i.
+
+Return the average salary of employees excluding the minimum and maximum salary.
+Example 1:
+
+Input: salary = [4000,3000,1000,2000]
+Output: 2500.00000
+Explanation: Minimum salary and maximum salary are 1000 and 4000 respectively.
+Average salary excluding minimum and maximum salary is (2000+3000)/2= 2500
+
+ANSWER:
+   class Solution:
+    def average(self, salary: List[int]) -> float:
+        salary.sort()
+        sum=0
+        n=len(salary)
+        for i in range(1,n-1):
+            sum=sum+salary[i]
+        sum=(sum/(n-2))
+
+    
+        return sum
+.............................................................................
+21.    Given an array of integers nums.
+
+A pair (i,j) is called good if nums[i] == nums[j] and i < j.
+
+Return the number of good pairs.
+Example 1:
+
+Input: nums = [1,2,3,1,1,3]
+Output: 4
+Explanation: There are 4 good pairs (0,3), (0,4), (3,4), (2,5) 0-indexed.
+
+ANSWER:
+  class Solution:
+    def numIdenticalPairs(self, nums: List[int]) -> int:
+        dic={}
+        for i in nums:
+            if i not in dic.keys():
+                dic[i]=1
+            else:
+                dic[i]+=1
+        c=0
+        for i in dic.values():
+            c+=i*(i-1)//2
+        return c
+ .....................................................................................
+ 22.    There is a biker going on a road trip. The road trip consists of n + 1 points at different altitudes. The biker starts his trip on point 0 with altitude equal 0.
+
+You are given an integer array gain of length n where gain[i] is the net gain in altitude between points i​​​​​​ and i + 1 for all (0 <= i < n). Return the highest altitude of a point.
+Example 1:
+
+Input: gain = [-5,1,5,0,-7]
+Output: 1
+Explanation: The altitudes are [0,-5,-4,1,1,-6]. The highest is 1.
+
+ANSWER:
+  class Solution:
+    def largestAltitude(self, gain: List[int]) -> int:
+        k=[]
+        k.append(0)
+        s=0
+        for i in gain:
+            s=s+i
+            k.append(s)
+        return max(k)
+................................................................................................
+23.   You are working in a ball factory where you have n balls numbered from lowLimit up to highLimit inclusive (i.e., n == highLimit - lowLimit + 1), and an infinite number of boxes numbered from 1 to infinity.
+
+Your job at this factory is to put each ball in the box with a number equal to the sum of digits of the ball's number. For example, the ball number 321 will be put in the box number 3 + 2 + 1 = 6 and the ball number 10 will be put in the box number 1 + 0 = 1.
+
+Given two integers lowLimit and highLimit, return the number of balls in the box with the most balls.
+Example 1:
+
+Input: lowLimit = 1, highLimit = 10
+Output: 2
+Explanation:
+Box Number:  1 2 3 4 5 6 7 8 9 10 11 ...
+Ball Count:  2 1 1 1 1 1 1 1 1 0  0  ...
+Box 1 has the most number of balls with 2 balls.
+
+ANSWER:
+    class Solution:
+    def countBalls(self, lowLimit: int, highLimit: int) -> int:
+        def sums(n):
+            s=0
+            while n:
+                r=n%10
+                n=n//10
+                s=s+r
+            return s
+        dic={}
+        for i in range(lowLimit,highLimit+1):
+            s=sums(i)
+            if s not in dic.keys():
+                dic[s]=1
+            else:
+                dic[s]+=1
+        return max(dic.values())
+ .....................................................................................
+ 24.   You are given an integer array nums. The unique elements of an array are the elements that appear exactly once in the array.
+
+Return the sum of all the unique elements of nums.
+Example 1:
+
+Input: nums = [1,2,3,2]
+Output: 4
+Explanation: The unique elements are [1,3], and the sum is 4.
+
+ANSWER:
+   class Solution:
+    def sumOfUnique(self, nums: List[int]) -> int:
+        dic={}
+        for i in nums:
+            if i not in dic.keys():
+                dic[i]=1
+            else:
+                dic[i]+=1
+        s=0
+        for k,v in dic.items():
+            if v==1:
+                s+=k
+        return s
+ .......................................................................
+ 25.    Given an integer n (in base 10) and a base k, return the sum of the digits of n after converting n from base 10 to base k.
+
+After converting, each digit should be interpreted as a base 10 number, and the sum should be returned in base 10.
+Example 1:
+
+Input: n = 34, k = 6
+Output: 9
+Explanation: 34 (base 10) expressed in base 6 is 54. 5 + 4 = 9.
+
+ANSWER:
+  class Solution:
+    def sumBase(self, n: int, k: int) -> int:
+        s=0
+        while n:
+            r=n%k
+            n=n//k
+            s=s+r
+        return s
+ ......................................................................
+        
+        
+
+ 
 
    
    
